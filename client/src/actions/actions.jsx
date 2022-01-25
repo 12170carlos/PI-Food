@@ -14,9 +14,9 @@ const {
 
 const axios = require('axios');
 
-export const getRecipe = () => {
+export const getRecipes = () => {
     return async function (dispatch) {
-        const recipe = await axios.get("http://localhost:3001/recipe");
+        const recipe = await axios.get("http://localhost:3001/api/recipe");
         dispatch({
             type: GET_RECIPE,
             payload: recipe.data,
@@ -47,7 +47,7 @@ export const getDetail = (id) => {
     }
 }
 
-export const getDiets =  () => {
+export const getDiets = () => {
     return async function (dispatch) {
         const diets = await axios.get("http://localhost:3001/api/diets");
         dispatch({
@@ -93,7 +93,7 @@ export const resetDetail =() => {
         type: RESET_DETAIL,
     }
 }
-export const SetLoading =(boolean) => {
+export const setLoading =(boolean) => {
     return {
         type: SET_LOADING,
         payload: boolean,

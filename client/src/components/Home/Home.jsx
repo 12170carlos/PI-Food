@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getRecipes, setLoading } from "../../actions";
+import { getRecipes, setLoading } from "../../actions/actions";
 import Card from "../Card/Card";
 import Pagination from "../Pagination/Pagination";
-import DietsContainer from "../DietsContainer/DietsContainer";
+import AllDiets from "../AllDiets/AllDiets";
 import style from "./Home.module.css";
-//import SearchBar from "../SearchBar/SearchBar";
+import SearchBar from "../SearchBar/SearchBar";
 //import SelectSort from "../SelectSort/SelectSort";
 import Loading from "../Loading/Loading";
-import Nav from "../Nav/Nav";
+import NavBar from "../NavBar/NavBar";
 
 
 export default function Home() {
   //Global states
-  const recipe = useSelector((state) => state.currentRecipes);
+  const recipe = useSelector((state) => state.recipes);
   const loading = useSelector((state) => state.loading);
 
   //Local states
@@ -36,7 +36,7 @@ export default function Home() {
   /*mounting*/
   useEffect(() => {
     dispatch(getRecipes());
-  }, [dispatch]);
+  },[dispatch]);
 
   /*unmounting*/
   useEffect(() => {
@@ -47,23 +47,21 @@ export default function Home() {
 
   return (
     <div>
-      <Nav />
-      {loading ? (
-        <Loading />
-      ) : (
-        <div>
+      <NavBar />
+      {(loading) ? <Loading />
+        : <div>
           <div className={style.containerSearch}>
-            {/* <SearchBar /> */}
+            <SearchBar />
             {/* <SelectSort /> */}
           </div>
-          <div className={style.box}>
+          {/* <div className={style.box}>
             <div className={style.containerImg}>
               <img src="./img/portada.png" alt="Loading" />
             </div>
-          </div>
+          </div> */}
 
           <div className={style.containerDiets}>
-            <DietsContainer />
+            <AllDiets />
           </div>
 
           <div className={style.cardContainer}>
@@ -72,9 +70,9 @@ export default function Home() {
                 return (
                   <Card
                     key={recipe.id}
-                    name={recipe.name}
+                    title={recipe.title}
                     image={recipe.image}
-                    type_diets={recipe.type_diets}
+                    diets={recipe.diets}
                     id={recipe.id}
                   />
                 );
@@ -82,7 +80,7 @@ export default function Home() {
             ) : (
               <img
                 id={style.imgError}
-                src={process.env.PUBLIC_URL + `/img/not_found1.png`}
+                src={process.env.PUBLIC_URL + `/img/not_found.png`}
                 alt="Error"
               />
             )}
@@ -93,7 +91,7 @@ export default function Home() {
             foodPerPage={foodPerPage}
           />
         </div>
-      )}
+      }
     </div>
   );
 }

@@ -1,14 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
-//import style from "./Landing.module.css";
+import style from "./Landing.module.css";
 
 export default function LandingPage()  {
     return (
-        <div>
-            <h1>Bienvenidos a mi super pagina!</h1>
-            <Link to='/recipes'>
-                <button>Ingresar</button>
-            </Link>
-        </div>
-    )
+        <div className={style.image}>
+            <div className={style.containerBtn}> 
+            <Link to='/recipes' className={style.link}><button id={style.btn}>Start Now</button></Link>
+            </div>
+           
+        </div> 
+    ); 
 }
