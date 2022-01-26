@@ -61,7 +61,7 @@ export default function rootReducer (state = initialState, action)  {
             }
         case FILTER_DIET:
             let newRecipe = [];
-            if (action.payload === "all"){
+            if (action.payload === "All"){
 
                 return {
                     ...state,
@@ -69,7 +69,7 @@ export default function rootReducer (state = initialState, action)  {
                 }
             }
             state.allRecipes.forEach(diet => {
-                if (diet.type_diets.includes(action.payload)){
+                if (diet.diets.includes(action.payload)){
                     newRecipe.push(diet)
                 }
             })

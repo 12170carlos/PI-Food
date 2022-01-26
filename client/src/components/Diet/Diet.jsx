@@ -10,14 +10,14 @@ export default function Diet  ({ name })  {
   return (
     <div>
       <button className={style.btn}>
-      name={name}
-        {/* <img
+     
+        <img
           name={name}
           src={`./img/icons/${name}.png`}
           alt="Diet"
           onClick={(e) => dispatch(filterBy(e.target.name))}
-        /> */}
-         onClick={(e) => dispatch(filterBy(e.target.name))}
+        />
+         
         <span className={style.tooltiptext}>{name.toUpperCase()}</span>
       </button>
     </div>

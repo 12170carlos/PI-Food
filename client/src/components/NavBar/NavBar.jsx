@@ -7,14 +7,14 @@ const NavBar = () => {
     <div>
         <nav className={style.NavContainer}>
             <ul>
-                <NavLink to="/recipe" className={style.link} activeClassName={style.active}>
+                <NavLink to="/recipe" className={style.link} activeclassname={style.active}>
                     {" "}
                     <li>Home</li>
                 </NavLink>
-                <NavLink to="/myOwnRecipes" className={style.Link} activeClassName={style.active}>
+                <NavLink to="/myOwnRecipes" className={style.Link} activeclassname={style.active}>
                     <li>New Recipes</li>
                 </NavLink>
-                <NavLink to="/ownRecipes" className={style.Link} activeClassName={style.active}>
+                <NavLink to="/ownRecipes" className={style.Link} activeclassname={style.active}>
                     <li>My Own Recipes</li>
                 </NavLink>
 

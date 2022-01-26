@@ -4,7 +4,7 @@ import style from "./Card.module.css"
 //import { useDispatch } from "react-redux";
 
 
-const Card = ({ id, image, title, diets }) => {
+export default function Card ({ id, image, title, diets }) {
     return (
       <div className={style.containerCard}>
         <div className={style.imgContainer}>
@@ -39,4 +39,4 @@ const Card = ({ id, image, title, diets }) => {
     );
   };
 
-  export default Card;
+  
