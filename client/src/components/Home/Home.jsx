@@ -3,24 +3,24 @@ import { useSelector, useDispatch } from "react-redux";
 import { getRecipes, setLoading } from "../../actions/actions";
 import Card from "../Card/Card";
 import Pagination from "../Pagination/Pagination";
-import AllDiets from "../AllDiets/AllDiets";
 import style from "./Home.module.css";
 import SearchBar from "../SearchBar/SearchBar";
-//import SelectSort from "../SelectSort/SelectSort";
+import Filters from "../Filters/Filters"
 import Loading from "../Loading/Loading";
 import NavBar from "../NavBar/NavBar";
+import AllDiets from "../AllDiets/AllDiets"
 
-
-export default function Home() {
+const Home = () => {
   //Global states
-  const recipe = useSelector((state) => state.recipes);
-  const loading = useSelector((state) => state.loading);
+  const recipe = useSelector((state) => state.allRecipes);
+  const loading = useSelector((state)=> state.loading)
 
+  console.log("recipe:", recipe)
   //Local states
   const [currentPage, setCurrentPage] = useState(1);
   const foodPerPage = 9;
 
-  //variables
+  //variables 
   const indexOfLastFood = currentPage * foodPerPage;
   const indexOfFirstFood = indexOfLastFood - foodPerPage;
   const currentFood = recipe.slice(indexOfFirstFood, indexOfLastFood);
@@ -34,66 +34,65 @@ export default function Home() {
   const dispatch = useDispatch();
 
   /*mounting*/
-  useEffect(() => {
-    dispatch(getRecipes());
+  useEffect(() => { 
+    dispatch(getRecipes()); 
   },[dispatch]);
 
   /*unmounting*/
-  useEffect(() => {
-    return recipe.length
-      ? dispatch(setLoading(false))
-      : dispatch(setLoading(true));
-  }, [recipe, dispatch]);
+  useEffect(()=>{
+    return recipe.length ? dispatch(setLoading(false)) : dispatch(setLoading(true))
+  },[recipe,dispatch])
 
-  return (
-    <div>
-      <NavBar />
-      {(loading) ? <Loading />
-        : <div>
+
+ 
+    return (
+     
+      <div>
+         <NavBar />
+        {      
+          (loading) ? <Loading />
+          : <div>   
           <div className={style.containerSearch}>
-            <SearchBar />
-            {/* <SelectSort /> */}
-          </div>
-          {/* <div className={style.box}>
-            <div className={style.containerImg}>
-              <img src="./img/portada.png" alt="Loading" />
-            </div>
-          </div> */}
-
-          <div className={style.containerDiets}>
-            <AllDiets />
-          </div>
-
-          <div className={style.cardContainer}>
-            {Array.isArray(currentFood) ? (
-              currentFood.map((recipe) => {
-                return (
-                  <Card
-                    key={recipe.id}
-                    title={recipe.title}
-                    image={recipe.image}
-                    diets={recipe.diets}
-                    id={recipe.id}
-                  />
-                );
-              })
-            ) : (
-              <img
-                id={style.imgError}
-                src={process.env.PUBLIC_URL + `/img/not_found.png`}
-                alt="Error"
-              />
-            )}
-          </div>
-          <Pagination
-            pagination={pagination}
-            allRecipe={recipe.length}
-            foodPerPage={foodPerPage}
-          />
+          <SearchBar />
+          <Filters />
         </div>
-      }
-    </div>
-  );
-}
+        {/* <div className={style.box}>
+          <div className={style.containerImg}>
+            <img src="./img/portada.png" alt="Loading" />
+          </div>
+        </div> */}
 
+        <div className={style.containerDiets}>
+  
+          <AllDiets />
+        </div>
 
+        <div className={style.cardContainer}>
+         { Array.isArray(currentFood)? currentFood.map((recipe) => {
+            return (
+              <Card
+                key={recipe.id}
+                name={recipe.name}
+                image={recipe.image}
+                diets={recipe.diets}
+                id={recipe.id}
+              />
+            );
+          }): (<img id={style.imgError}src={process.env.PUBLIC_URL + `/img/not_found1.png`} alt="Error"/>) } 
+        </div>
+        <Pagination
+          pagination={pagination}
+          allRecipe={recipe.length}
+          foodPerPage={foodPerPage}
+        />
+     
+        
+     </div> 
+        
+        }
+
+</div>
+    );
+  }
+
+export default Home;

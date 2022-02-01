@@ -2,27 +2,30 @@
 
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getDetail, setLoading, resetDetail } from "../../actions";
+import { getDetail, resetDetail, setLoading } from "../../actions/actions";
 import { useParams } from "react-router-dom";
 import style from "./RecipeDetail.module.css";
-import Loading from "../Loading/Loading";
+ import Loading from "../Loading/Loading";
+// import NavBar from "../NavBar/NavBar";
+
 import NavBar from "../NavBar/NavBar";
-// import Nav from "../Nav/Nav";
-export default function RecipeDetail ()  {
+
+
+const RecipeDetail = () => {
   //Global state
   const recipe = useSelector((state) => state.detailed);
-  const loading = useSelector((state) => state.loading);
-
+  const loading = useSelector((state)=> state.loading)
   //HOOKS
   const { id } = useParams();
   const dispatch = useDispatch();
 
+  console.log("id:", id)
   /*mounting*/
-  useEffect (() => {
+  useEffect(() => {
     dispatch(getDetail(id));
-  },[])
+  }, []);
   
-  useEffect (()=>{
+  useEffect(()=>{
       recipe? dispatch(setLoading(false)):dispatch(setLoading(true))
   },[recipe])
   
@@ -32,6 +35,11 @@ export default function RecipeDetail ()  {
     return dispatch(resetDetail());
   },[]);
  
+  useEffect(() => {
+    dispatch(setLoading(true))
+    return dispatch(resetDetail());
+  },[]);
+  
   return (
     <div>
       <NavBar />
@@ -44,27 +52,27 @@ export default function RecipeDetail ()  {
 
           <div className={style.scoreContainer}>
             <span>
-              {/* <img
-                src={process.env.PUBLIC_URL + `/img/icons_detail/score1.png`}
+              <img
+                src={process.env.PUBLIC_URL + `/img/icons/whole 30.png`}
                 alt="Score"
-              /> */}
+              />
               {recipe.score}
             </span>
 
             <span>
-              {/* <img
+              <img
                 src={
-                  process.env.PUBLIC_URL + `/img/icons_detail/healthscore.png`
+                  process.env.PUBLIC_URL + `/img/icons_card/myrecipe.png`
                 }
                 alt="Health"
-              /> */}
+              />
               {recipe.health_score}
             </span>
             <span>
-              {/* <img
-                src={process.env.PUBLIC_URL + `/img/icons_detail/time.png`}
+              <img
+                src={process.env.PUBLIC_URL + `/img/icons_card/more_info01.png`}
                 alt="Time"
-              /> */}
+              />
               {recipe.time}'
             </span>
           </div>
@@ -85,7 +93,7 @@ export default function RecipeDetail ()  {
       <div className={style.containerSteps}>
         <div className={style.containerTextSteps}>
           <div className={style.containerIcon}>
-            {/* <img src={process.env.PUBLIC_URL + `/img/icons_detail/chef.png`} alt="Diet"/> */}
+            <img src={process.env.PUBLIC_URL + `/img/icons_detail/chef.png`} alt="Diet"/>
             <h4>Cook this meal</h4>
           </div>
 
@@ -103,20 +111,20 @@ export default function RecipeDetail ()  {
 
         <div className={style.containerDiet}>
           <div className={style.containerIcon}>
-            {/* <img
+            <img
               src={process.env.PUBLIC_URL + `/img/icons_detail/typediet.png`}
               alt="Diet"
-            /> */}
+            />
             <h4>Types Diets</h4>
           </div>
-          {recipe.Diets?.map((diet,i) => {
+          {recipe.type_diets?.map((diet,i) => {
             return (
               <div className={style.containerDietText}>
-                {/* <img key={diet}
+                <img key={diet}
                   src={process.env.PUBLIC_URL + `/img/icons/${diet}.png`}
                   alt="Diet"
                   className={style.img}
-                /> */}
+                />
                 <h6 key={i}>{diet}</h6>
               </div>
             );
@@ -131,3 +139,4 @@ export default function RecipeDetail ()  {
   );
 
 }
+export default RecipeDetail;

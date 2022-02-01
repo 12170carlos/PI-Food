@@ -5,12 +5,14 @@ import { useDispatch } from 'react-redux';
 
 export default function SearchBar()  { 
 
-    //HOOKS
+  
     const dispatch = useDispatch()
 
-    //HANDLES
+    
     const [input,setInput] = useState(""); 
+
     const handleInput=(e)=>{
+        e.preventDefault() 
         setInput(e.target.value)
       
     }
@@ -33,4 +35,3 @@ export default function SearchBar()  {
 
     );
 }
-

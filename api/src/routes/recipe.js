@@ -1,35 +1,33 @@
 const { Router } = require('express');
-const { API_KEY } = process.env;
-const router = Router();
-const axios = require("axios");
-const { getRecipes, getById} = require('../controllers/recipes');
-const  { Recipe } = require('../db')
-const {  detailById, getRecipeByIdDB } = require('../controllers/recipeById')
 
-router.get('/', function (req, res) {
-    
-    getRecipes(req, res)
+const router = Router();
+require('dotenv').config();
+const axios = require("axios");
+const { getAllRecipes } = require('../controllers/recipes');
+
+const { getById } = require('../controllers/recipeById')
+//const {   detailById, getRecipeByIdDB } = require('../controllers/recipeById')
+
+router.get('/', async (req, res, next)  => {
+    try {
+        const { name } = req.query;
+        const totalRecipes = await getAllRecipes();
+
+        if (name){
+            let byName = totalRecipes.filter( recipe => recipe.name.toLowerCase().includes(name.toLowerCase()));
+        byName.length ? res.json(byName)
+        : res.send('Alert: Recipe not Found')
+            
+        }else  res.json(totalRecipes)
+        
+    } catch (error) {
+        next(error)
+    }
 });
 
-router.get('/:id', async (req, res,next) => {
+router.get('/:id', async (req, res) => {
     const { id } = req.params;
-
-    const integerId = Number(id);
-    if(id) {
-        if (Number.isInteger(integerId)) {
-            try {
-                let recipeById = await detailById(id);
-                let recipeDbId = await getRecipeByIdDB(id)
-
-                if (recipeDbId) return res.json(recipeDbId);
-                if (recipeById) return res.json(recipeById);
-
-                return res.status(404).send('Recipe not found')
-            } catch (error) {
-                next(error);
-            }
-        }
-    }
+    getById(id, res)
+    
 })
-
 module.exports = router;

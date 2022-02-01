@@ -16,7 +16,7 @@ const initialState = {
     allRecipes: [],
     diets: [],
     recipes: [],
-    detailed: [],
+    detailed: {},
     myOwnRecipes: [],
     loading: true,
     currentPage: 1
@@ -27,8 +27,8 @@ export default function rootReducer (state = initialState, action)  {
         case GET_RECIPE:
             return {
                 ...state,
-                allRecipes: action.payload,
                 recipes: action.payload,
+                allRecipes: action.payload,
             };
         case GET_DETAIL:
             return {
@@ -38,19 +38,19 @@ export default function rootReducer (state = initialState, action)  {
         case GET_DIETS:
             return {
                 ...state,
-                diets: action.payload.map((r) => r.name),
+                diets: action.payload,
             }
         case SEARCH_BY_NAME:
             if (!action.payload.length) {
                 return {
                     ...state,
-                    recipes: "WE CAN'T FOUND RESULTS, CHECK AGAIN"
+                    allRecipes: "WE CAN'T FOUND RESULTS, CHECK AGAIN"
                 }
             }else{
 
                 return {
                     ...state,
-                    recipes: action.payload,
+                    allRecipes: action.payload,
                 }
             }
         case ADD_NEW_RECIPE:
@@ -61,21 +61,21 @@ export default function rootReducer (state = initialState, action)  {
             }
         case FILTER_DIET:
             let newRecipe = [];
-            if (action.payload === "All"){
+            if (action.payload === "all"){
 
                 return {
                     ...state,
-                    recipes: state.allRecipes
+                    allRecipes: state.recipes
                 }
             }
-            state.allRecipes.forEach(diet => {
+            state.recipes.forEach(diet => {
                 if (diet.diets.includes(action.payload)){
                     newRecipe.push(diet)
                 }
             })
             return {
                 ...state,
-                recipes: newRecipe
+                allRecipes: newRecipe
             }
         case SET_CURRENT_PAGE:
             return {
@@ -87,14 +87,14 @@ export default function rootReducer (state = initialState, action)  {
             let options = {
                 "a-z": function(a,b) { return new Intl.Collator().compare(a.name,b.name)},//equivale a LocalCompare pero para grandes matrices
                 "z-a": function(a,b) { return new Intl.Collator().compare(b.name,a.name)},
-                "0-100": function(a,b) { return a.score < b.score},
-                "100-0": function(a,b) { return b.score < a.score},
+                "0-100": function(a,b) { return a.score - b.score},
+                "100-0": function(a,b) { return b.score - a.score},
             }
             sorted.sort((a,b) => options[action.payload](a,b))
 
             return {
                 ...state,
-                recipes:sorted
+                allRecipes:sorted
             }
             case SET_LOADING:
                 return {

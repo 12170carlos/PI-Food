@@ -17,7 +17,7 @@ const CreateRecipe = () => {
     steps: "",
     diets: [],
     image:`${process.env.PUBLIC_URL}img/myrecipe.png`,
-    time:"",
+    
   });
  
 
@@ -39,12 +39,6 @@ const CreateRecipe = () => {
       case "health_score":
         if (!/^[0-9]?[0-9]{1}$|^100$/.test(input.health_score)) {
           error.health_score = "The health score must be from 0 to 100";
-        }
-        break;
-      case "time":
-        parseInt(input.time)
-        if(input.time < 0){
-           error.time = "The time shouldn't be negative number"
         }
         break;
       case "image":

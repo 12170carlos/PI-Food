@@ -5,10 +5,11 @@ const { Diet } = require('../db')
 
 const getDiets = async() => {
     const ask = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&number=100&addRecipeInformation=true`);
-    const diets = await ask.data.results.map( d => d.diets).flat(1);
+    const diets = await ask.data.results.map( d => d.diets).flat();
+    
     let moods = [];
-    diets ? moods = moods.concat(diets) : false
-    return [... new Set(diets)]
+    diets && moods.concat(diets) 
+    return [... new Set(diets), "vegetarian"]
 }
 
 
@@ -23,6 +24,7 @@ const loadDiets = async(res) => {
                })
            }
        } 
+       
        return res.send(moodsDb)
     } catch (error) {
       console.log(error)  

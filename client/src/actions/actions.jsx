@@ -38,11 +38,17 @@ export const myOwnRecipes = (newRecipe) => {
 
 export const getDetail = (id) => {
     return async function (dispatch) {
-        const detail = await axios.get(`http://localhost:3001/recipe/${id}`);
-        dispatch({
-            type: GET_DETAIL,
-            payload: detail.data,
-        })
+        try {
+            
+            let detail = await axios.get("http://localhost:3001/api/recipe/" + id);
+            console.log("detail:", detail.data)
+            return dispatch({
+                type: GET_DETAIL,
+                payload: detail.data,
+            })
+        } catch (error) {
+            console.log(error)
+        }
 
     }
 }
@@ -58,9 +64,9 @@ export const getDiets = () => {
 }
 
 
-export const searchByName = (name) => {
+export const searchByName = (input) => {
     return async function (dispatch) {
-        const searchName = await axios.get(`http://localhost:3001/recipe?name=${name}`);
+        const searchName = await axios.get(`http://localhost:3001/api/recipe?name=${input}`);
         dispatch({
             type: SEARCH_BY_NAME,
             payload:searchName.data,

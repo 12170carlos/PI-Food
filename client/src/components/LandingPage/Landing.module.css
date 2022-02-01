@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:Montserrat:ital,wght@0,300;1,200;1,400&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Montserrat:Montserrat:ital,wght@0,300;1,200;1,400&display=swap'); */
 .image{ 
     background-image: url('./LandingPage.png');
     height: 100vh;
@@ -20,7 +20,7 @@
     border-radius: 5px;
     background-color: #d2812a;
     cursor: pointer;
-    font-family: 'Montserrat', sans-serif;
+    font-family: fantasy, sans-serif;
     font-size: 15px;
     color: #132540;
     

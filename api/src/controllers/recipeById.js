@@ -1,20 +1,17 @@
 const { Recipe, Diet } = require("../db");
 const { API_KEY } = process.env;
+const { getAllRecipes } = require("./recipes")
 
 const axios = require('axios');
 
-const detailById = async (id) => {
+const detailById = async () => {
     try {
-        const ask = await axios.get(`https://api.spoonacular.com/recipes/${id}/information?apiKey=${API_KEY}` );
-        const ele = ask.data; 
-        console.log("ele:", ele);
-
-        const recipe = [];
-  
-            recipe.push( {
-
-                id:ele.id,
-                title:ele.title,
+        const recipeApi = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=100`);
+        const respuesta = recipeApi.data.results;
+        return respuesta.map((ele) => {
+            return {
+                id: ele.id,
+                name: ele.title,
                 summary: ele.summary,
                 score: ele.spoonacularScore,
                 healthScore: ele.healthScore,
@@ -23,56 +20,75 @@ const detailById = async (id) => {
                 }),
                 image: ele.image,
                 createInDb: false,
-                diets: ele.diets.map(diet => diet)
-            })
-        return recipe;
-         
-    } catch (error) {
-        console.error(error)
-    }
-}
-
-const getRecipeByIdDB = async (id)  => {
-    try {
-        const detail = await Recipe.findOne({ 
-            where: { id: id},
-            include: [
-                {
-                    model: Diet,
-                    attributes: ['name'],
-                    through: {
-                        attributes: [],
-                    }
-                }
-            ]
+                diets: ele.diets
+            }
         })
         
-        return detail;
+        
     } catch (error) {
         console.log(error)
     }
+}
 
-};
 
 
-// const getRecipeById = async (req, res) => {
+const getById =  async(id, res) => {
+    try {
+        
+        if (!id.includes("-")) {
+            console.log('entro')      
+            const detail= await getAllRecipes();    
+            const recipesId =  detail?.find((reci) => reci.id.toString() === id);
+            recipesId
+                ? res.json(recipesId)
+                : res.json("No Recipe Found for this ID")
+        }else {
+            const detail = await Recipe.findOne({
+                where: { id: id },
+                include: [
+                    {
+                        model: Diet,
+                        attributes: ["name"],
+                        through: {
+                            attributes: [],
+                        },
+                    },
+                ],
+            });
+           
+            detail ? res.send(detail) : res.send("No Recipe Found for this ID")
+        } 
+    }catch (error) {
+       console.log(error);
+    }
+}
+
+// const getRecipeByIdDB = async (id)  => {
 //     try {
-//         const { id } = req.params;
-//         const recipeByIdDb = await getRecipeByIdDB();
-//         const recipeByIdApi = await detailById();
-
-//         const recipeByIdTotal = recipeByIdDb.concat(recipeByIdApi);
-
-//         if (id) {
-//             let recipe = recipeByIdTotal.filter(re => re.id == id);
-//             recipe.length ? res.status(200).json(recipe): res.status(404).json({msg: 'Recipe not found'})
-//         }
+//         const detail = await Recipe.findOne({ 
+//             where: { id: id},
+//             include: [
+//                 {
+//                     model: Diet,
+//                     attributes: ['name'],
+//                     through: {
+//                         attributes: [],
+//                     }
+//                 }
+//             ]
+//         })
+        
+//         return detail;
 //     } catch (error) {
 //         console.log(error)
 //     }
-// }
+
+// };
+
+
+
 module.exports = {
-    
+    getById,
     detailById,
-    getRecipeByIdDB
+    //getRecipeByIdDB
 }
