@@ -1,5 +1,5 @@
-/* @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital@1&display=swap"); */
-
+ @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital@1&display=swap"); 
+ @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
 .container {
   display: flex;
   justify-content: space-around;
@@ -16,8 +16,8 @@
 .containerName {
   text-align: center;
   width: 100%;
-  font-family: fantasy, sans-serif;
-  color: #132540;
+  font-family: "Pacifico", cursiva;
+  color: #0a505c;
 }
 .containerName h1 {
   display: inline;
@@ -59,7 +59,7 @@
   align-items: center;
   justify-content: center;
   margin-right: 5px;
-  font-family: fantasy, sans-serif;
+  font-family: "Montserrat", sans-serif;
   color: #132540;
   height: 50vh;
 }
@@ -86,7 +86,7 @@
     height: 80px;
 } 
 .containerIcon h4{ 
-    font-family: fantasy, sans-serif;
+    font-family: "Montserrat", sans-serif;
     color: #d2812a;
 } 
 .containerTextSteps{
@@ -102,15 +102,15 @@
     width: 100%;
 }
 .containernNumSteps h4{
-    font-family: fantasy, sans-serif;
+    font-family: "Montserrat", sans-serif;
     color: #132540;
     border-bottom: solid #d2812a;
     margin-right: 20px;
     
 }
 .containernNumSteps h6{
-    font-family: fantasy, sans-serif;
-    color: #132540;
+    font-family: "Montserrat", sans-serif;
+    color: #4797a5;
     text-align: left;
 } 
 
@@ -129,6 +129,6 @@
     display: flex;
     justify-content: flex-start;
     color: #132540;
-    font-family: fantasy, sans-serif;
+    font-family: "Montserrat", sans-serif;
   }
   

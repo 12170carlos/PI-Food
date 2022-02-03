@@ -35,10 +35,6 @@ const RecipeDetail = () => {
     return dispatch(resetDetail());
   },[]);
  
-  useEffect(() => {
-    dispatch(setLoading(true))
-    return dispatch(resetDetail());
-  },[]);
   
   return (
     <div>
@@ -62,29 +58,29 @@ const RecipeDetail = () => {
             <span>
               <img
                 src={
-                  process.env.PUBLIC_URL + `/img/icons_card/myrecipe.png`
+                  process.env.PUBLIC_URL + `/img/icons_card/healthscore.jpg`
                 }
                 alt="Health"
               />
-              {recipe.health_score}
+              {recipe.healthScore}
             </span>
-            <span>
+            {/* <span>
               <img
                 src={process.env.PUBLIC_URL + `/img/icons_card/more_info01.png`}
                 alt="Time"
               />
               {recipe.time}'
-            </span>
+            </span> */}
           </div>
         </div>
 
         <div className={style.containerGrupScore}>
           <div className={style.containerName}>
-            <h1>{recipe.name} </h1>
+            <h2>{recipe.name} </h2>
           </div>
 
           <div className={style.containerResume}>
-            <h6>{recipe.resume}</h6>
+            <h6>{recipe.summary}</h6>
           </div>
         </div>
       </div>
@@ -93,8 +89,8 @@ const RecipeDetail = () => {
       <div className={style.containerSteps}>
         <div className={style.containerTextSteps}>
           <div className={style.containerIcon}>
-            <img src={process.env.PUBLIC_URL + `/img/icons_detail/chef.png`} alt="Diet"/>
-            <h4>Cook this meal</h4>
+            <img src={process.env.PUBLIC_URL + `/img/recipes/chef_sombrero.png`} alt="Diet"/>
+            <h4>How Cooking it!</h4>
           </div>
 
           {Array.isArray(recipe.steps) ? (
@@ -112,12 +108,12 @@ const RecipeDetail = () => {
         <div className={style.containerDiet}>
           <div className={style.containerIcon}>
             <img
-              src={process.env.PUBLIC_URL + `/img/icons_detail/typediet.png`}
+              src={process.env.PUBLIC_URL + `/img/icons_card/typediet.png`}
               alt="Diet"
             />
             <h4>Types Diets</h4>
           </div>
-          {recipe.type_diets?.map((diet,i) => {
+          {recipe.diets?.map((diet,i) => {
             return (
               <div className={style.containerDietText}>
                 <img key={diet}

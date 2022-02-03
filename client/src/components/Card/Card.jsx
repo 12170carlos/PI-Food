@@ -13,8 +13,8 @@ export default function card ({ id, image, name, diets }) {
           <h1>{name}</h1>
         </div>
         <div className={style.containerDiet}>
-          {diets.map((diet) => (
-            <h6 key={diet}>{diet.toUpperCase()} |</h6>
+          {diets?.map((diet) => (
+            <h6 key={diet.name}>{diet.toUpperCase()} |</h6>
           ))}
         </div>
       </div>

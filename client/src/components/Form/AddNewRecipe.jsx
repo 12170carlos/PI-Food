@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+
 import { useDispatch, useSelector } from "react-redux";
 import style from "./Form.module.css";
 import NavBar from "../NavBar/NavBar";
 import { myOwnRecipes } from "../../actions/actions";
+import { useNavigate} from 'react-router-dom';
+import { getDiets } from "../../actions/actions";
 
 //methods
   const validate = (input, e) => {
@@ -36,17 +39,19 @@ import { myOwnRecipes } from "../../actions/actions";
     return error;
   };
   
-const CreateRecipe = () => {
+const AddNewRecipe = () => {
   //global states
   const diets = useSelector((state) => state.diets);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   //local states
   const [errors, setErrors] = useState({});
   const [input, setInput] = useState({
     name: "",
     summary: "",
-    score: "",
-    healthScore: "",
+    score: 0,
+    healthScore: 0,
     steps: "",
     diets: [],
     image: `${process.env.PUBLIC_URL}img/myrecipe.png`,
@@ -54,7 +59,6 @@ const CreateRecipe = () => {
 
   
 
-  const dispatch = useDispatch();
 
   const handleInput = (e) => {
     setInput({
@@ -63,30 +67,64 @@ const CreateRecipe = () => {
     });
     setErrors(validate({ ...input, [e.target.name]: e.target.value }, e));
   };
-  const handleSubmit = (newRecipe, e) => {
-    e.preventDefault();
-    dispatch(myOwnRecipes(newRecipe));
+  const handleSubmit = (e) => {
+     e.preventDefault();
+     if (isDisabled(errors)) {
+        alert("it must fill all fields")
+
+    } else {
+     
+        dispatch(myOwnRecipes(input));
+        alert("Recipe created successfully");
+        setInput({
+            title: "",
+            summary: "",
+            score: 0,
+            healthScore: 0,
+            steps: "",
+            image: "",
+            diets: [],
+        });
+        navigate('/recipes')
+    }
+       
   };
-  const handleCheckBox = (e) => {
+  function handleCheckBox (e) {
     setInput({
       ...input,
-      diets: [...input.diets, e.target.id],
+      diets: [...input.diets, e.target.value],
     });
   };
+
+  function handleDelete(e) {
+      e.preventDefault();
+      setInput({
+          ...input,
+          diets: input.diets.filter((diet) => diet !== e),
+      });
+  }
 
   function isDisabled(errors) {
     return Object.keys(errors).length > 0;
   }
+
+  useEffect(() => {
+    dispatch(getDiets());
+  }, [dispatch]);
+
+  
+  
   return (
     <div>
       <NavBar />
-      <form onSubmit={(e) => handleSubmit(input, e)}>
+      <form onSubmit={(e) => handleSubmit(e)}>
         <div className={style.form}>
           <div className={style.containerInput}>
             <div className={style.grupo}>
               <input
                 type="text"
                 name="name"
+                value={input.name}
                 className={style.input}
                 required
                 onChange={(e) => handleInput(e)}
@@ -99,6 +137,7 @@ const CreateRecipe = () => {
             <div className={style.grupo}>
               <textarea
                 name="summary"
+                value={input.summary}
                 rows="3"
                 required
                 className={style.input}
@@ -111,6 +150,7 @@ const CreateRecipe = () => {
             <div className={style.grupo}>
               <textarea
                 name="steps"
+                value={input.steps}
                 rows="3"
                 required
                 className={style.input}
@@ -124,6 +164,7 @@ const CreateRecipe = () => {
               <input
                 type="number"
                 name="score"
+                value={input.score}
                 required
                 className={style.input}
                 onChange={(e) => handleInput(e)}
@@ -136,6 +177,7 @@ const CreateRecipe = () => {
             <div className={style.grupo}>
               <input
                 type="number"
+                value={input.healthScore}
                 name="healthScore"
                 className={style.input}
                 onChange={(e) => handleInput(e)}
@@ -155,6 +197,7 @@ const CreateRecipe = () => {
               <input
                 type="text"
                 name="image"
+                value={input.image}
                 className={style.input}
                 onChange={(e) => handleInput(e)}
               />
@@ -164,35 +207,30 @@ const CreateRecipe = () => {
             </div>
           </div>
 
-          <div className={style.containerDiet}>
-            <div className={style.containerIconDiet}>
-              <img
-                src={process.env.PUBLIC_URL + `/img/icons_detail/typediet.png`}
-                alt="type diets"
-              />
-              <span>Choose Diet</span>
-            </div>
-            {diets.map((diet,i) => {
-              return (
-                <div  key = {i} className={style.containerDietMap}>
-                 
-                  <input
-                  
-                    type="checkbox"
-                    id={diet.name}
-                    name="diets"
-                    onChange={(e) => handleCheckBox(e)}
-                  />
-                  <img
-                    src={process.env.PUBLIC_URL + `/img/icons/${diet.name}.png`}
-                    alt="Diet"
-                  />
-                  <label>{diet.name.toUpperCase()}</label>
-                </div>
-              );
-            })}
+          <div className={style.grupo}>
+              <select 
+                className={style.input}
+                onChange={(e) => handleCheckBox(e)}
+              >
+              {diets.map((d) => (
+                  <option value={d.name} key={d.name}>
+                      {d.name}
+                  </option>
+              ))}
+                </select>
+                {input.diets.map((d, i) => (
+                    <ul key={i}>
+                        <li>{d}</li>
+                        <button onClick={(e) => handleDelete(e,d)}>x</button>
+
+                    </ul>
+                ))}
+
           </div>
+
+
         </div>
+
         <div className={style.button}>
           <input
             type="submit"
@@ -205,4 +243,4 @@ const CreateRecipe = () => {
   );
 };
 
-export default CreateRecipe;
+export default AddNewRecipe;

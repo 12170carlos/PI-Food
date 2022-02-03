@@ -1,0 +1,125 @@
+.sideBar {
+    width: 100vw;
+    box-sizing: border-box;
+    overflow: hidden;
+    text-align: center;
+
+}
+.search { 
+    width: 80vw; 
+    border-radius: 20px;    
+    margin: 0.5em auto 0.5em auto;
+    display: block;  
+}
+
+.searchDogs {
+    font-family: "Roboto", sans-serif;
+    color: #212121;
+    font-weight:bold;
+    font-size: 0.9em;
+    display: block;  
+    text-align: left;
+    padding: 0.4em 0 0.2em 0;    
+}
+
+.filters {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    margin-left: 1em;
+    margin-right: 1em;
+    display: block;
+    background-color:white;
+    border-radius: 10px;
+    font-family: "Roboto", sans-serif;
+    color: #212121;
+    font-size: 1em;
+    padding: 0.1em 0.5em 0.5em 0.5em;
+}
+.filters label{
+    display: block;
+    margin-top: 0.4em;
+    margin-bottom: 0.1em;
+}
+
+.sort {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.4em;
+    background-color:white;
+    border-radius: 10px;
+    font-family: "Roboto", sans-serif;
+    color: #212121;
+    padding: 0.2em 0.5em 0.2em 0.5em;
+    margin-left: 0.7em;
+    margin-right: 0.7em;
+    
+}
+
+.sort1 {
+    margin-right: 10px;
+}
+
+.sort2 {
+    margin-left: 10px
+}
+
+ul {
+    padding-inline-start: 0px;
+}
+
+@media only screen and (min-width: 640px) {
+ 
+    .sideBar {
+        max-width: 20vw;
+        margin-left: 0.5em;
+        align-self: self-start;
+    }
+    
+    .searchDogs {
+        width: 180px;
+    }
+
+    .search {
+        margin:5em 0 2em 0em;
+        max-width: 180px;
+   }
+
+   .filters {
+    margin:2em 1em 3em 0em;
+    width: 170px;
+    font-size: 1em;
+   }
+
+   .sort {
+    display: block;
+    width: 160px;
+    font-size: 1.6em;
+    margin:1em 0 0 0;
+}
+    .sort1{
+        margin: 0 auto 0 auto;
+    }
+
+    .sort2{
+        margin: 0 auto 0 auto;
+    }
+}
+
+@media only screen and (min-width: 1008px) {
+ 
+    .sideBar {
+        max-width: 240px;
+        margin-left: 2em;
+    }
+   .filters {
+    width: 180px;
+   }
+
+   .sort {
+    display: block;
+    width: 170px;
+    font-size: 1.6em;
+    margin:1em 0 0 0;
+}
+}

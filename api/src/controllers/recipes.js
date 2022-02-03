@@ -5,7 +5,7 @@ const axios = require("axios");
 const { API_KEY } = process.env;
 require('dotenv').config();
 
-const getRecipesFromAPi = async () => {
+const getRecipesFromApi = async () => {
     try {
         const recipeApi = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=100`);
         const respuesta = recipeApi.data.results;
@@ -13,12 +13,15 @@ const getRecipesFromAPi = async () => {
             return {
                 id: ele.id,
                 name: ele.title,
-                summary: ele.summary,
+                summary: ele.summary.replace(/<[^>]*>?/gm, ""),
                 score: ele.spoonacularScore,
                 healthScore: ele.healthScore,
-                steps: ele.analyzedInstructions.map(s => {
-                    return (s.steps.map(s2 => (s2.step)))
-                }),
+                types: ele.dishTypes?.map(ele => ele),
+                steps: (ele.analyzedInstructions[0] &&
+                ele.analyzedInstructions[0].steps?.map(s => {
+                    return {number: s.number, step: s.step} 
+                })
+                ),
                 image: ele.image,
                 createInDb: false,
                 diets: ele.diets
@@ -58,7 +61,7 @@ const getRecipesfromDb = async() => {
 }
 const getAllRecipes = async () => {
 
-    const apiRecipes = await getRecipesFromAPi();
+    const apiRecipes = await getRecipesFromApi();
     const dbRecipes = await getRecipesfromDb();
     const totalRecipes = [...dbRecipes, ...apiRecipes]
     

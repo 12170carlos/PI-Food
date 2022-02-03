@@ -25,14 +25,10 @@ module.exports = (sequelize) => {
       type:DataTypes.INTEGER,
     },
     steps: {//paso a paso
-      type:DataTypes.ARRAY(DataTypes.TEXT),
+      type:DataTypes.TEXT,
     },
     image: {
       type:DataTypes.STRING,
-      validate: {
-        isUrl: true,
-      },
-      defaultValue: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzE6wXzKl1pitbvReTHUDVpUSGlYsl-S26oA&usqp=CAU" ,
     },
     createInDb: {
       type: DataTypes.BOOLEAN,

@@ -5,22 +5,22 @@ import Card from "../Card/Card";
 import Pagination from "../Pagination/Pagination";
 import style from "./Home.module.css";
 import SearchBar from "../SearchBar/SearchBar";
-import Filters from "../Filters/Filters"
+import Filters from "../Filters/Filters";
 import Loading from "../Loading/Loading";
 import NavBar from "../NavBar/NavBar";
-import AllDiets from "../AllDiets/AllDiets"
+import AllDiets from "../AllDiets/AllDiets";
 
 const Home = () => {
   //Global states
   const recipe = useSelector((state) => state.allRecipes);
-  const loading = useSelector((state)=> state.loading)
+  const loading = useSelector((state) => state.loading);
 
-  console.log("recipe:", recipe)
+  console.log("recipe:", recipe);
   //Local states
   const [currentPage, setCurrentPage] = useState(1);
   const foodPerPage = 9;
 
-  //variables 
+  //variables
   const indexOfLastFood = currentPage * foodPerPage;
   const indexOfFirstFood = indexOfLastFood - foodPerPage;
   const currentFood = recipe.slice(indexOfFirstFood, indexOfLastFood);
@@ -34,65 +34,68 @@ const Home = () => {
   const dispatch = useDispatch();
 
   /*mounting*/
-  useEffect(() => { 
-    dispatch(getRecipes()); 
-  },[dispatch]);
+  useEffect(() => {
+    dispatch(getRecipes());
+  }, [dispatch]);
 
   /*unmounting*/
-  useEffect(()=>{
-    return recipe.length ? dispatch(setLoading(false)) : dispatch(setLoading(true))
-  },[recipe,dispatch])
+  useEffect(() => {
+    return recipe.length
+      ? dispatch(setLoading(false))
+      : dispatch(setLoading(true));
+  }, [recipe, dispatch]);
 
-
- 
-    return (
-     
-      <div>
-         <NavBar />
-        {      
-          (loading) ? <Loading />
-          : <div>   
+  return (
+    <div>
+      <NavBar />
+      {loading ? 
+        <Loading />
+      : 
+        <div>
           <div className={style.containerSearch}>
-          <SearchBar />
-          <Filters />
-        </div>
-        {/* <div className={style.box}>
-          <div className={style.containerImg}>
-            <img src="./img/portada.png" alt="Loading" />
+            <SearchBar />
+            <Filters />
           </div>
-        </div> */}
-
-        <div className={style.containerDiets}>
-  
-          <AllDiets />
+          <div className={style.box}>
+          <div className={style.containerImg}>
+            <img src="./img/make_recipe.png" alt="Loading" />
+          </div>
         </div>
 
-        <div className={style.cardContainer}>
-         { Array.isArray(currentFood)? currentFood.map((recipe) => {
-            return (
-              <Card
-                key={recipe.id}
-                name={recipe.name}
-                image={recipe.image}
-                diets={recipe.diets}
-                id={recipe.id}
+          <div className={style.containerDiets}>
+            <AllDiets />
+          </div>
+
+          <div className={style.cardContainer}>
+            {Array.isArray(currentFood) ? 
+              currentFood.map((recipe) => {
+                return (
+                  
+                  <Card
+                    key={recipe.id}
+                    name={recipe.name}
+                    image={recipe.image}
+                    diets={recipe.diets ? recipe.diets : recipe.Diets.map(d => d.name)}
+                    id={recipe.id}
+                    />
+                );
+              })
+            : (<img
+                id={style.imgError}
+                src={process.env.PUBLIC_URL + `/img/not_found1.png`}
+                alt="Error"
               />
-            );
-          }): (<img id={style.imgError}src={process.env.PUBLIC_URL + `/img/not_found1.png`} alt="Error"/>) } 
+            )}
+          </div>
+          <Pagination
+            pagination={pagination}
+            allRecipe={recipe.length}
+            foodPerPage={foodPerPage}
+          />
         </div>
-        <Pagination
-          pagination={pagination}
-          allRecipe={recipe.length}
-          foodPerPage={foodPerPage}
-        />
-     
-        
-     </div> 
-        
-        }
-
-</div>
-    );
-  }
+      }
+    </div>
+  );
+};
 
 export default Home;

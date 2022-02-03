@@ -6,18 +6,21 @@ const axios = require('axios');
 
 const detailById = async () => {
     try {
-        const recipeApi = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=100`);
+        const recipeApi = await axios.get(`https://api.spoonacular.com/recipes/${id}/information`)
+        //const recipeApi = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=100`);
         const respuesta = recipeApi.data.results;
         return respuesta.map((ele) => {
             return {
                 id: ele.id,
                 name: ele.title,
-                summary: ele.summary,
+                summary: ele.summary.replace(/<[^>]*>?/gm, ""),
                 score: ele.spoonacularScore,
                 healthScore: ele.healthScore,
-                steps: ele.analyzedInstructions.map(s => {
-                    return (s.steps.map(s2 => (s2.step)))
-                }),
+                steps: ele.analyzedInstructions.length > 0 ?
+                ele.analyzedInstructions[0].steps.map(s => {
+                    return { number: s.number, step: s.step } 
+                })
+                : "No Steps",
                 image: ele.image,
                 createInDb: false,
                 diets: ele.diets
